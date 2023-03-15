@@ -4,12 +4,13 @@ public enum LineEnum {
 	CRONOS("Cronos"),
 	ARES(  "Ares");
 
-	private String name;
+	private final String name;
 
 	LineEnum(String name) {
 		this.name = name;
 	}
-
+	
+	@Override
 	public String toString() {
 		return name;
 	}
