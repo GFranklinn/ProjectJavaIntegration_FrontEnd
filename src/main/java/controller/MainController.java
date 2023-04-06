@@ -1,72 +1,74 @@
 package controller;
 
-import model.CategoryEnum;
-import model.LineEnum;
-import model.ModelEnum;
+import hibernate.util.HibernateUtil;
+import model.EntityCategory;
+import model.EntityLine;
+import model.EntityModel;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import org.hibernate.Session;
 
-public class MainController implements Initializable {
 
-	@FXML
-	private Accordion accordion;
+public class MainController {
 
-	@FXML
-	private TitledPane tpLine;
+    @FXML
+    private Accordion accordion;
 
-	@FXML
-	private ComboBox<LineEnum> cbbLine;
+    @FXML
+    private TitledPane tpLine;
 
-	@FXML
-	private TitledPane tpModel;
+    @FXML
+    private ComboBox<EntityLine> cbbLine;
 
-	@FXML
-	private TreeView<?> tvModel;
+    @FXML
+    private TitledPane tpModel;
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		accordion.setExpandedPane(tpLine);
-		tpModel.setDisable(true);
+    @FXML
+    private TreeView<?> tvModel;
 
-		cbbLine.setItems(FXCollections.observableArrayList(LineEnum.values()));
-		cbbLine.valueProperty().addListener(((observable, oldValue, newValue) -> openTv()));
-	}
+    public Session session = HibernateUtil.getSessionFactory().openSession();
 
-	public void openTv() {
-		tpModel.setDisable(false);
-		tpModel.setExpanded(true);
+    @FXML
+    public void initialize() {
+        accordion.setExpandedPane(tpLine);
+        tpModel.setDisable(true);
 
-		fillTv();
-	}
+        List<EntityLine> listLine = session.createQuery("FROM EntityLine").list();
+        cbbLine.setItems(FXCollections.observableArrayList(listLine));
+        cbbLine.valueProperty().addListener(((observable, oldValue, newValue) -> openTv()));
+    }
 
-	public void fillTv() {
-		TreeItem root = new TreeItem();
+    public void openTv() {
+        tpModel.setDisable(false);
+        tpModel.setExpanded(true);
 
-		LineEnum cbbLineSelected = cbbLine.getValue();
-		for (CategoryEnum categoryEnum : CategoryEnum.values()) {
-			if (categoryEnum.getLineEnum().equals(cbbLineSelected)) {
-				TreeItem newItem = new TreeItem<>(categoryEnum);
-				root.getChildren().add(newItem);
-				for (ModelEnum modelEnum : ModelEnum.values()) {
-					if (modelEnum.getCategoryEnum().getLineEnum().equals(cbbLineSelected)
-							&& modelEnum.getCategoryEnum().equals(categoryEnum)) {
-						TreeItem model = new TreeItem(modelEnum);
-						newItem.getChildren().add(model);
-					}
-				}
-			}
-		}
+        fillTv();
+    }
 
-		root.setValue(cbbLineSelected);
-		root.setExpanded(true);
-		tvModel.setRoot(root);
+    public void fillTv() {
+        TreeItem root = new TreeItem();
 
-	}
+        EntityLine cbbLineSelected = cbbLine.getValue();
 
+        List<EntityCategory> listCategory = session.createQuery(String.format("FROM EntityCategory WHERE id_line = '%s'", cbbLineSelected.getId())).list();
+        listCategory.forEach(entityCategory -> {
+            TreeItem newItemCategory = new TreeItem<>(entityCategory);
+            root.getChildren().add(newItemCategory);
+
+            List<EntityModel> listModel = session.createQuery(String.format("FROM EntityModel WHERE id_category = '%s'", entityCategory.getId())).list();
+            listModel.forEach(entityModel -> {
+                TreeItem itemModel = new TreeItem<>(entityModel);
+                newItemCategory.getChildren().add(itemModel);
+            });
+
+        });
+        root.setValue(cbbLineSelected);
+        root.setExpanded(true);
+        tvModel.setRoot(root);
+
+    }
 }
