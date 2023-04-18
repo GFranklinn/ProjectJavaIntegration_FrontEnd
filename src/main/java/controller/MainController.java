@@ -1,6 +1,6 @@
 package controller;
 
-import hibernate.util.HibernateUtil;
+import helper.DataBaseHelper;
 import model.EntityCategory;
 import model.EntityLine;
 import model.EntityModel;
@@ -10,10 +10,9 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import org.hibernate.Session;
 
 
-public class MainController {
+public class MainController{
 
     @FXML
     private Accordion accordion;
@@ -28,16 +27,19 @@ public class MainController {
     private TitledPane tpModel;
 
     @FXML
-    private TreeView<?> tvModel;
-
-    public Session session = HibernateUtil.getSessionFactory().openSession();
+    private TreeView tvModel;
 
     @FXML
     public void initialize() {
         accordion.setExpandedPane(tpLine);
         tpModel.setDisable(true);
 
-        List<EntityLine> listLine = session.createQuery("FROM EntityLine").list();
+        cbbSetItems();
+    }
+    @FXML
+    public void cbbSetItems () {
+
+        List<EntityLine> listLine = DataBaseHelper.getListLine();
         cbbLine.setItems(FXCollections.observableArrayList(listLine));
         cbbLine.valueProperty().addListener(((observable, oldValue, newValue) -> openTv()));
     }
@@ -54,12 +56,13 @@ public class MainController {
 
         EntityLine cbbLineSelected = cbbLine.getValue();
 
-        List<EntityCategory> listCategory = session.createQuery(String.format("FROM EntityCategory WHERE id_line = '%s'", cbbLineSelected.getId())).list();
+        List<EntityCategory> listCategory = DataBaseHelper.getListCategory(cbbLineSelected);
+
         listCategory.forEach(entityCategory -> {
             TreeItem newItemCategory = new TreeItem<>(entityCategory);
             root.getChildren().add(newItemCategory);
 
-            List<EntityModel> listModel = session.createQuery(String.format("FROM EntityModel WHERE id_category = '%s'", entityCategory.getId())).list();
+            List<EntityModel> listModel = DataBaseHelper.getListModel(entityCategory);
             listModel.forEach(entityModel -> {
                 TreeItem itemModel = new TreeItem<>(entityModel);
                 newItemCategory.getChildren().add(itemModel);
