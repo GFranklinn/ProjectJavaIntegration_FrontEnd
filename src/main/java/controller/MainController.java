@@ -11,8 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-
-public class MainController{
+public class MainController {
 
     @FXML
     private Accordion accordion;
@@ -36,8 +35,9 @@ public class MainController{
 
         cbbSetItems();
     }
+
     @FXML
-    public void cbbSetItems () {
+    public void cbbSetItems() {
 
         List<EntityLine> listLine = DataBaseHelper.getListLine();
         cbbLine.setItems(FXCollections.observableArrayList(listLine));
