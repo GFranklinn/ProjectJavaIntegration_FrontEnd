@@ -39,7 +39,7 @@ public class MainController {
     @FXML
     public void cbbSetItems() {
 
-        List<EntityLine> listLine = DataBaseHelper.getListLine();
+        List<EntityLine> listLine = EntityLine.getListLine();
         cbbLine.setItems(FXCollections.observableArrayList(listLine));
         cbbLine.valueProperty().addListener(((observable, oldValue, newValue) -> openTv()));
     }
@@ -56,13 +56,13 @@ public class MainController {
 
         EntityLine cbbLineSelected = cbbLine.getValue();
 
-        List<EntityCategory> listCategory = DataBaseHelper.getListCategory(cbbLineSelected);
+        List<EntityCategory> listCategory = EntityCategory.getListCategory(cbbLineSelected);
 
         listCategory.forEach(entityCategory -> {
             TreeItem newItemCategory = new TreeItem<>(entityCategory);
             root.getChildren().add(newItemCategory);
 
-            List<EntityModel> listModel = DataBaseHelper.getListModel(entityCategory);
+            List<EntityModel> listModel = EntityModel.getListModel(entityCategory);
             listModel.forEach(entityModel -> {
                 TreeItem itemModel = new TreeItem<>(entityModel);
                 newItemCategory.getChildren().add(itemModel);
