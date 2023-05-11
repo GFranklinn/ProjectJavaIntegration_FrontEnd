@@ -1,6 +1,5 @@
 package controller;
 
-import helper.DataBaseHelper;
 import model.EntityCategory;
 import model.EntityLine;
 import model.EntityModel;
