@@ -1,6 +1,6 @@
 package controller;
 
-import hibernate.util.HibernateUtil;
+import util.HibernateUtil;
 import model.EntityCategory;
 import model.EntityLine;
 import model.EntityModel;
