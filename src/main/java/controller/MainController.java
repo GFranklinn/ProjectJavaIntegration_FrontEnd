@@ -1,5 +1,6 @@
 package controller;
 
+import dao.*;
 import util.HibernateUtil;
 import model.EntityCategory;
 import model.EntityLine;
@@ -11,7 +12,6 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.hibernate.Session;
-
 
 public class MainController {
 
@@ -32,12 +32,22 @@ public class MainController {
 
     public Session session = HibernateUtil.getSessionFactory().openSession();
 
+    private EntityLineDaoImpl lineDao;
+    private EntityCategoryDao categoryDao;
+    private EntityModelDaoImpl modelDao;
+
+    public MainController(){
+        lineDao = new EntityLineDaoImpl();
+        categoryDao = new EntityCategoryDaoImpl();
+        modelDao = new EntityModelDaoImpl();
+    }
+
     @FXML
     public void initialize() {
         accordion.setExpandedPane(tpLine);
         tpModel.setDisable(true);
 
-        List<EntityLine> listLine = session.createQuery("FROM EntityLine").list();
+        List<EntityLine> listLine = lineDao.getListLine();
         cbbLine.setItems(FXCollections.observableArrayList(listLine));
         cbbLine.valueProperty().addListener(((observable, oldValue, newValue) -> openTv()));
     }
@@ -54,12 +64,12 @@ public class MainController {
 
         EntityLine cbbLineSelected = cbbLine.getValue();
 
-        List<EntityCategory> listCategory = session.createQuery(String.format("FROM EntityCategory WHERE id_line = '%s'", cbbLineSelected.getId())).list();
+        List<EntityCategory> listCategory = categoryDao.getListCategory(cbbLineSelected);
         listCategory.forEach(entityCategory -> {
             TreeItem newItemCategory = new TreeItem<>(entityCategory);
             root.getChildren().add(newItemCategory);
 
-            List<EntityModel> listModel = session.createQuery(String.format("FROM EntityModel WHERE id_category = '%s'", entityCategory.getId())).list();
+            List<EntityModel> listModel = modelDao.getListModel(entityCategory);
             listModel.forEach(entityModel -> {
                 TreeItem itemModel = new TreeItem<>(entityModel);
                 newItemCategory.getChildren().add(itemModel);
