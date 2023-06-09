@@ -28,12 +28,12 @@ public class MainController {
     private TitledPane tpModel;
 
     @FXML
-    private TreeView<?> tvModel;
+    private TreeView tvModel;
 
     public Session session = HibernateUtil.getSessionFactory().openSession();
 
     private EntityLineDaoImpl lineDao;
-    private EntityCategoryDao categoryDao;
+    private EntityCategoryDaoImpl categoryDao;
     private EntityModelDaoImpl modelDao;
 
     public MainController(){
@@ -46,7 +46,7 @@ public class MainController {
     public void initialize() {
         accordion.setExpandedPane(tpLine);
         tpModel.setDisable(true);
-
+    
         List<EntityLine> listLine = lineDao.getListLine();
         cbbLine.setItems(FXCollections.observableArrayList(listLine));
         cbbLine.valueProperty().addListener(((observable, oldValue, newValue) -> openTv()));
@@ -66,12 +66,12 @@ public class MainController {
 
         List<EntityCategory> listCategory = categoryDao.getListCategory(cbbLineSelected);
         listCategory.forEach(entityCategory -> {
-            TreeItem newItemCategory = new TreeItem<>(entityCategory);
+            TreeItem newItemCategory = new TreeItem(entityCategory);
             root.getChildren().add(newItemCategory);
 
             List<EntityModel> listModel = modelDao.getListModel(entityCategory);
             listModel.forEach(entityModel -> {
-                TreeItem itemModel = new TreeItem<>(entityModel);
+                TreeItem itemModel = new TreeItem(entityModel);
                 newItemCategory.getChildren().add(itemModel);
             });
 
