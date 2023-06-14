@@ -46,7 +46,7 @@ public class MainController {
     public void initialize() {
         accordion.setExpandedPane(tpLine);
         tpModel.setDisable(true);
-    
+
         List<EntityLine> listLine = lineDao.getListLine();
         cbbLine.setItems(FXCollections.observableArrayList(listLine));
         cbbLine.valueProperty().addListener(((observable, oldValue, newValue) -> openTv()));
