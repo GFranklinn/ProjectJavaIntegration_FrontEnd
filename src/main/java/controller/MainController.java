@@ -32,9 +32,9 @@ public class MainController {
 
     public Session session = HibernateUtil.getSessionFactory().openSession();
 
-    private EntityLineDaoImpl lineDao;
-    private EntityCategoryDaoImpl categoryDao;
-    private EntityModelDaoImpl modelDao;
+    private EntityLineDao lineDao;
+    private EntityCategoryDao categoryDao;
+    private EntityModelDao modelDao;
 
     public MainController(){
         lineDao = new EntityLineDaoImpl();
