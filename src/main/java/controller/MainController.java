@@ -64,7 +64,7 @@ public class MainController{
 
             listModel.forEach(model -> {
                 TreeItem<String> itemModel = new TreeItem<>(model.getName());
-                itemModel.setValue(String.valueOf(model));  // Definindo o objeto EntityModelDto como valor do TreeItem
+                itemModel.setValue(String.valueOf(model));
                 itemCategory.getChildren().add(itemModel);
             });
         });
