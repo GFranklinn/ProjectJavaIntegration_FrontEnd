@@ -30,7 +30,6 @@ public class MainController{
     @FXML
     private TreeView tvModel;
 
-
     @FXML
     void initialize(){
 
@@ -38,7 +37,6 @@ public class MainController{
         tpModel.setDisable(true);
 
         List<EntityLineDto> lineList = getListDb(EntityLineDto[].class, "linha");
-
 
         cbbLine.setItems(FXCollections.observableArrayList(lineList));
         cbbLine.valueProperty().addListener(((observable, oldValue, newValue) -> tvOpen()));
@@ -53,28 +51,25 @@ public class MainController{
     }
 
     void tvFill() {
-
-
-        int cbbLineSelected = cbbLine.getValue().getId();
-        TreeItem root = new TreeItem(cbbLineSelected);
+        EntityLineDto selectedLine = cbbLine.getValue();
+        String cbbLineSelected = String.valueOf(selectedLine.getId());
+        TreeItem<String> root = new TreeItem<>(selectedLine.getName());
 
         List<EntityCategoryDto> listCategory = getListDb(EntityCategoryDto[].class, "categorias", String.valueOf(cbbLineSelected));
         listCategory.forEach(listItemCategory -> {
-            TreeItem itemCategory = new TreeItem<>(listItemCategory);
+            TreeItem<String> itemCategory = new TreeItem<>(listItemCategory.getName());
             root.getChildren().add(itemCategory);
 
             List<EntityModelDto> listModel = getListDb(EntityModelDto[].class, "modelos", String.valueOf(listItemCategory.getId()));
 
             listModel.forEach(model -> {
-                TreeItem itemModel = new TreeItem(model);
+                TreeItem<String> itemModel = new TreeItem<>(model.getName());
+                itemModel.setValue(String.valueOf(model));  // Definindo o objeto EntityModelDto como valor do TreeItem
                 itemCategory.getChildren().add(itemModel);
             });
         });
 
-        root.setValue(cbbLineSelected);
         root.setExpanded(true);
         tvModel.setRoot(root);
-
     }
-
 }

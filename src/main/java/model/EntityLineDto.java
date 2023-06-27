@@ -7,6 +7,7 @@ public class EntityLineDto extends ObjectAbstractDto {
     public EntityLineDto(int id, String name){
         super(name, id);
     }
+
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof EntityLineDto)) {
@@ -15,5 +16,10 @@ public class EntityLineDto extends ObjectAbstractDto {
 
         EntityLineDto diferentLine = (EntityLineDto) object;
         return super.equals(object);
+    }
+
+    @Override
+    public String toString(){
+        return getName();
     }
 }
