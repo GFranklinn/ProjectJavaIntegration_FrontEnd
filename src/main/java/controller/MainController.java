@@ -55,7 +55,7 @@ public class MainController{
         String cbbLineSelected = String.valueOf(selectedLine.getId());
         TreeItem<String> root = new TreeItem<>(selectedLine.getName());
 
-        List<EntityCategoryDto> listCategory = getListDb(EntityCategoryDto[].class, "categorias", String.valueOf(cbbLineSelected));
+        List<EntityCategoryDto> listCategory = getListDb(EntityCategoryDto[].class, "categorias", (cbbLineSelected));
         listCategory.forEach(listItemCategory -> {
             TreeItem<String> itemCategory = new TreeItem<>(listItemCategory.getName());
             root.getChildren().add(itemCategory);
