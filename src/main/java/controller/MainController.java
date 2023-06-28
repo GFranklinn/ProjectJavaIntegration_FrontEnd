@@ -43,7 +43,6 @@ public class MainController{
 
     }
 
-    //Method tvOpen
     void tvOpen() {
         tpModel.setDisable(false);
         tpModel.setExpanded(true);
