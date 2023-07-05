@@ -22,8 +22,8 @@ variables:
 image:
   name: maven:3-openjdk-8
   entrypoint: [""]
-  variables:
-    JAVA_OPTS: "-d32"
+  environment:
+    MAVEN_OPTS: "$MAVEN_OPTS"
 
 cache:
   paths:
