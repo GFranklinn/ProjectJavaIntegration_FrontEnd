@@ -18,7 +18,7 @@ cache:
 stages:
   - clean
   - test
-  - install
+  - package
 
 clean:
   stage: clean
@@ -37,10 +37,10 @@ test:
     - develop
 
 install:
-  stage: install
+  stage: package
   script:
     - 'java -version'
-    - 'mvn install -DskipTests'
+    - 'mvn package -DskipTests'
   only:
     - develop
 
