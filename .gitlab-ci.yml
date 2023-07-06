@@ -36,7 +36,7 @@ test:
   only:
     - develop
 
-install:
+package:
   stage: package
   script:
     - 'java -version'
