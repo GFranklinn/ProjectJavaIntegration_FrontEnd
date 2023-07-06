@@ -1,9 +1,3 @@
-# .gitlab-ci.yml
-
-stages:
-  - test
-  - build
-
 variables:
   MAVEN_OPTS: >-
     -Dhttps.protocols=TLSv1.2
@@ -13,41 +7,40 @@ variables:
   MAVEN_CLI_OPTS: >-
     --batch-mode
     --errors
-    --fail-at-end
     --show-version
-    --no-transfer-progress
     -DinstallAtEnd=true
     -DdeployAtEnd=true
-
-image:
-  name: maven:3-openjdk-8
-  entrypoint: [""]
-  environment:
-    MAVEN_OPTS: "$MAVEN_OPTS"
 
 cache:
   paths:
     - .m2/repository
 
-.test:
+stages:
+  - clean
+  - test
+  - install
+
+clean:
+  stage: clean
+  script:
+    - 'java -version'
+    - 'mvn clean'
+  only:
+    - develop
+
+test:
   stage: test
   script:
-    - 'mvn $MAVEN_CLI_OPTS clean'
-    - 'mvn $MAVEN_CLI_OPTS test'
+    - 'java -version'
+    - 'mvn test'
+  only:
+    - develop
 
-.build:
-  stage: build
+install:
+  stage: install
   script:
-    - 'mvn $MAVEN_CLI_OPTS package -DskipTests'
-
-job_test:
-  extends: .test
+    - 'java -version'
+    - 'mvn install -DskipTests'
   only:
-    variables:
-      - $CI_COMMIT_BRANCH == "develop"
+    - develop
 
-job_build:
-  extends: .build
-  only:
-    variables:
-      - $CI_COMMIT_BRANCH == "develop"
