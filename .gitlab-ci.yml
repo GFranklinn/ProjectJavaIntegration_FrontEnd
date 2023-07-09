@@ -43,6 +43,3 @@ package:
     - 'mvn package -DskipTests'
   only:
     - develop
-job:
-  tags:
-    - runner-1-start
