@@ -23,6 +23,7 @@ stages:
 clean:
   stage: clean
   script:
+    - 'java -version'
     - 'mvn clean'
   only:
     - develop
@@ -30,6 +31,7 @@ clean:
 test:
   stage: test
   script:
+    - 'java -version'
     - 'mvn test'
   only:
     - develop
@@ -37,6 +39,7 @@ test:
 package:
   stage: package
   script:
+    - 'java -version'
     - 'mvn package -DskipTests'
   only:
     - develop
