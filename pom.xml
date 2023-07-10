@@ -55,6 +55,8 @@
             <groupId>project.java.integration.back.end</groupId>
             <artifactId>ProjectJavaIntegration_BackEnd</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
