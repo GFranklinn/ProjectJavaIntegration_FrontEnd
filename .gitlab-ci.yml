@@ -1,7 +1,7 @@
 variables:
   MAVEN_OPTS: >-
     -Dhttps.protocols=TLSv1.2
-    -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
+    -Dmaven.repo.local=C:/Users/gabri/.m2/repository
     -Dorg.slf4j.simpleLogger.showDateTime=true
     -Djava.awt.headless=true
   MAVEN_CLI_OPTS: >-
