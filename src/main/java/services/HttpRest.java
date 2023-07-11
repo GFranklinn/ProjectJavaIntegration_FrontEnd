@@ -34,7 +34,7 @@ public abstract class HttpRest {
             connection.disconnect();
 
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
         return js;
     }
@@ -47,7 +47,6 @@ public abstract class HttpRest {
 
     public static String getJsonDb(String endUrl, String filter) {
         String fullURL = String.format("%s/%s/%s", URL_CONNECTION, endUrl, filter.replaceAll(" ", "%20"));
-        System.out.println(fullURL);
         return getRequestHttp(fullURL);
     }
 

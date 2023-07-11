@@ -19,13 +19,13 @@ public class EntityModelDto extends ObjectAbstractDto {
         this.entityCategoryDto = entityCategoryDto;
     }
 
-    @Override
+
     public boolean equals(Object object) {
         if (!(object instanceof EntityModelDto)) {
             return false;
         }
 
-        EntityModelDto diferentModel = (EntityModelDto) object;
-        return super.equals(object) && entityCategoryDto.equals(diferentModel.entityCategoryDto);
+        EntityModelDto differentModel = (EntityModelDto) object;
+        return super.equals(object) && entityCategoryDto.equals(differentModel.entityCategoryDto);
     }
 }

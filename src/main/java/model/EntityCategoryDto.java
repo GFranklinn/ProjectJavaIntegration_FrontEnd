@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class EntityCategoryDto extends ObjectAbstractDto {
 
     private EntityLineDto entityLineDto;
@@ -30,17 +32,13 @@ public class EntityCategoryDto extends ObjectAbstractDto {
             return false;
         }
 
-        EntityCategoryDto diferentCategory = (EntityCategoryDto) object;
-
         if (!super.equals(object)) {
             return false;
         }
 
-        if (entityLineDto == null) {
-            return diferentCategory.entityLineDto == null;
-        } else {
-            return entityLineDto.equals(diferentCategory.entityLineDto);
-        }
+        EntityCategoryDto differentCategory = (EntityCategoryDto) object;
+
+        return Objects.equals(entityLineDto, differentCategory.entityLineDto);
     }
     @Override
     public String toString() {
