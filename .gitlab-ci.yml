@@ -1,0 +1,28 @@
+stages:
+  - clean
+  - test
+  - package
+
+clean:
+  stage: clean
+  script:
+    - echo $JAVA_HOME
+    - mvn clean
+  only:
+    - develop
+
+test:
+  stage: test
+  script:
+    - echo $JAVA_HOME  
+    - mvn test
+  only:
+    - develop
+
+package:
+  stage: package
+  script:
+    - echo $JAVA_HOME
+    - mvn package -DskipTests
+  only:
+    - develop
