@@ -6,20 +6,23 @@ stages:
 clean:
   stage: clean
   script:
-    - 'mvn clean'
+    - echo $JAVA_HOME
+    - mvn clean
   only:
     - develop
 
 test:
   stage: test
   script:
-    - 'mvn test'
+    - echo $JAVA_HOME  
+    - mvn test
   only:
     - develop
 
 package:
   stage: package
   script:
-    - 'mvn package -DskipTests'
+    - echo $JAVA_HOME
+    - mvn package -DskipTests
   only:
     - develop
