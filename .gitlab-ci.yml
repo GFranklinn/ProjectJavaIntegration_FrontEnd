@@ -45,6 +45,6 @@ package:
 deploy:
   stage: deploy
   script:
-    - 'cp C:\dev\repos\git\ProjectJavaIntegration_FrontEnd\target\jfx\native\IntegrationProject-1.0.exe \\DESKTOP-D95UF8T\deploy'
+    - 'copy C:\dev\repos\git\ProjectJavaIntegration_FrontEnd\target\jfx\native\IntegrationProject-1.0.exe \\DESKTOP-D95UF8T\deploy'
   only:
     - master  
