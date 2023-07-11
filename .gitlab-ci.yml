@@ -2,14 +2,15 @@ stages:
   - clean
   - test
   - package
+  - deploy
 
 clean:
   stage: clean
   script:
-    - echo $JAVA_HOME
+    - echo $JAVA_HOME  
     - mvn clean
   only:
-    - develop
+    - master
 
 test:
   stage: test
@@ -17,12 +18,20 @@ test:
     - echo $JAVA_HOME  
     - mvn test
   only:
-    - develop
+    - master
 
 package:
   stage: package
   script:
-    - echo $JAVA_HOME
+    - echo $JAVA_HOME  
     - mvn package -DskipTests
   only:
-    - develop
+    - master
+
+deploy:
+  stage: deploy
+  script:
+    - echo $JAVA_HOME  
+    - copy C:\dev\repos\git\ProjectJavaIntegration_FrontEnd\target\jfx\native\IntegrationProject-1.0.exe \\DESKTOP-D95UF8T\deploy
+  only:
+    - master  
