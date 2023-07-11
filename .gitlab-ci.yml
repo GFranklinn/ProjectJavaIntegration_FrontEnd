@@ -7,27 +7,31 @@ stages:
 clean:
   stage: clean
   script:
-    - 'mvn clean'
+    - echo $JAVA_HOME  
+    - mvn clean
   only:
     - master
 
 test:
   stage: test
   script:
-    - 'mvn test'
+    - echo $JAVA_HOME  
+    - mvn test
   only:
     - master
 
 package:
   stage: package
   script:
-    - 'mvn package -DskipTests'
+    - echo $JAVA_HOME  
+    - mvn package -DskipTests
   only:
     - master
 
 deploy:
   stage: deploy
   script:
-    - 'copy C:\dev\repos\git\ProjectJavaIntegration_FrontEnd\target\jfx\native\IntegrationProject-1.0.exe \\DESKTOP-D95UF8T\deploy'
+    - echo $JAVA_HOME  
+    - copy C:\dev\repos\git\ProjectJavaIntegration_FrontEnd\target\jfx\native\IntegrationProject-1.0.exe \\DESKTOP-D95UF8T\deploy
   only:
     - master  
