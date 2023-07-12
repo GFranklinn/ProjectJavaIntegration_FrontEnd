@@ -6,7 +6,6 @@ stages:
 clean:
   stage: clean
   script:
-    - echo %JAVA_HOME%
     - mvn clean
   only:
     - develop
@@ -14,7 +13,6 @@ clean:
 test:
   stage: test
   script:
-    - echo %JAVA_HOME%  
     - mvn test
   only:
     - develop
@@ -22,7 +20,6 @@ test:
 package:
   stage: package
   script:
-    - echo %JAVA_HOME%
     - mvn package -DskipTests
   only:
     - develop
