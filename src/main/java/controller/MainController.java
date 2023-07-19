@@ -2,47 +2,51 @@ package controller;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import model.EntityCategoryDto;
 import model.EntityLineDto;
 import model.EntityModelDto;
 
-
+import java.net.URL;
 import java.util.List;
-
+import java.util.ResourceBundle;
 
 import static services.JsonMapDto.*;
 
-public class MainController{
+public class MainController implements Initializable {
 
     @FXML
-    private Accordion accordion;
+    protected Accordion accordion;
 
     @FXML
-    private TitledPane tpLine;
+    protected TitledPane tpLine;
 
     @FXML
-    private ComboBox<EntityLineDto> cbbLine;
+    protected ComboBox<EntityLineDto> cbbLine;
 
     @FXML
-    private TitledPane tpModel;
+    protected TitledPane tpModel;
 
     @FXML
-    private TreeView tvModel;
+    protected TreeView tvModel;
 
-    @FXML
-    void initialize(){
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
 
         accordion.setExpandedPane(tpLine);
         tpModel.setDisable(true);
 
+        fillCbbLineSelected();
+    }
+
+    public void fillCbbLineSelected() {
         List<EntityLineDto> lineList = getListDb(EntityLineDto[].class, "linha");
 
         cbbLine.setItems(FXCollections.observableArrayList(lineList));
         cbbLine.valueProperty().addListener(((observable, oldValue, newValue) -> tvOpen()));
-
     }
-
+    
     void tvOpen() {
         tpModel.setDisable(false);
         tpModel.setExpanded(true);
@@ -50,26 +54,34 @@ public class MainController{
         tvFill();
     }
 
-    void tvFill() {
-        EntityLineDto selectedLine = cbbLine.getValue();
-        String cbbLineSelected = String.valueOf(selectedLine.getId());
-        TreeItem<String> root = new TreeItem<>(selectedLine.getName());
+    public void tvFill() {
+        EntityLineDto lineSelected = cbbLine.getValue();
+        if (lineSelected != null) {
+            String lineName = lineSelected.getName();
+            TreeItem<String> root = new TreeItem<>(lineName);
+            tiFill(root);
+            root.setExpanded(true);
+            tvModel.setRoot(root);
+        }
+    }
 
-        List<EntityCategoryDto> listCategory = getListDb(EntityCategoryDto[].class, "categorias", (cbbLineSelected));
-        listCategory.forEach(listItemCategory -> {
-            TreeItem<String> itemCategory = new TreeItem<>(listItemCategory.getName());
-            root.getChildren().add(itemCategory);
+    public void tiFill(TreeItem root) {
+        EntityLineDto lineSelected = cbbLine.getValue();
 
-            List<EntityModelDto> listModel = getListDb(EntityModelDto[].class, "modelos", String.valueOf(listItemCategory.getId()));
+        List<EntityCategoryDto> categoryList = getListDb(EntityCategoryDto[].class, "categorias", String.valueOf(lineSelected.getId()));
 
-            listModel.forEach(model -> {
-                TreeItem<String> itemModel = new TreeItem<>(model.getName());
-                itemModel.setValue(String.valueOf(model));
-                itemCategory.getChildren().add(itemModel);
+        categoryList.forEach(categoryListItem -> {
+            TreeItem categoryItem = new TreeItem<>(categoryListItem.getName());
+            root.getChildren().add(categoryItem);
+
+            List<EntityModelDto> modelList = getListDb(EntityModelDto[].class, "modelos", String.valueOf(categoryListItem.getId()));
+
+            modelList.forEach(model -> {
+                TreeItem modelItem = new TreeItem(model);
+                categoryItem.getChildren().add(modelItem);
             });
         });
-
-        root.setExpanded(true);
-        tvModel.setRoot(root);
     }
 }
+
+
