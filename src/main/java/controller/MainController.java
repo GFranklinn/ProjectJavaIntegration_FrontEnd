@@ -46,7 +46,7 @@ public class MainController implements Initializable {
         cbbLine.setItems(FXCollections.observableArrayList(lineList));
         cbbLine.valueProperty().addListener(((observable, oldValue, newValue) -> tvOpen()));
     }
-    
+
     void tvOpen() {
         tpModel.setDisable(false);
         tpModel.setExpanded(true);
@@ -83,5 +83,3 @@ public class MainController implements Initializable {
         });
     }
 }
-
-
