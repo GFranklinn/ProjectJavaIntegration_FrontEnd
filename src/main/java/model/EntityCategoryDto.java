@@ -6,7 +6,9 @@ public class EntityCategoryDto extends ObjectAbstractDto {
 
     private EntityLineDto entityLineDto;
 
-    public EntityCategoryDto() {}
+    public EntityCategoryDto() {
+    }
+
     public EntityCategoryDto(int id, String name, EntityLineDto entityLineDto) {
         super(name, id);
         this.entityLineDto = entityLineDto;
@@ -27,6 +29,6 @@ public class EntityCategoryDto extends ObjectAbstractDto {
         }
 
         EntityCategoryDto otherCategory = (EntityCategoryDto) obj;
-        return super.equals(obj) && entityLineDto.equals(otherCategory.entityLineDto);
+        return super.equals(obj) && Objects.equals(entityLineDto, otherCategory.entityLineDto);
     }
 }
