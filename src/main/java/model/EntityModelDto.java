@@ -6,6 +6,11 @@ public class EntityModelDto extends ObjectAbstractDto {
 
     public EntityModelDto() {}
 
+    public EntityModelDto(int id, String name){
+        super(name, id);
+    }
+
+
     public EntityModelDto(int id, String name, EntityCategoryDto entityCategoryDto) {
         super(name, id);
         this.entityCategoryDto = entityCategoryDto;
@@ -19,7 +24,7 @@ public class EntityModelDto extends ObjectAbstractDto {
         this.entityCategoryDto = entityCategoryDto;
     }
 
-
+    @Override
     public boolean equals(Object object) {
         if (!(object instanceof EntityModelDto)) {
             return false;
