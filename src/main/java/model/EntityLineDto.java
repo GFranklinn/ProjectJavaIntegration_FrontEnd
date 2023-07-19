@@ -2,8 +2,10 @@ package model;
 
 public class EntityLineDto extends ObjectAbstractDto {
 
-    public EntityLineDto(){}
-    public EntityLineDto(int id, String name)   {
+    public EntityLineDto() {
+    }
+
+    public EntityLineDto(int id, String name) {
         super(name, id);
     }
 
@@ -13,13 +15,11 @@ public class EntityLineDto extends ObjectAbstractDto {
             return false;
         }
 
-        EntityLineDto diferentLine = (EntityLineDto) object;
         return super.equals(object);
     }
 
-
     @Override
-    public String toString(){
+    public String toString() {
         return getName();
     }
 }
