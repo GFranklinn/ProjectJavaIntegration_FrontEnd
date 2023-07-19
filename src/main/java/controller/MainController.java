@@ -66,9 +66,9 @@ public class MainController implements Initializable {
     }
 
     public void tiFill(TreeItem root) {
-        EntityLineDto lineSelected = cbbLine.getValue();
+        EntityLineDto cbbLineSelected = cbbLine.getValue();
 
-        List<EntityCategoryDto> categoryList = getListDb(EntityCategoryDto[].class, "categorias", String.valueOf(lineSelected.getId()));
+        List<EntityCategoryDto> categoryList = getListDb(EntityCategoryDto[].class, "categorias", String.valueOf(cbbLineSelected.getId()));
 
         categoryList.forEach(categoryListItem -> {
             TreeItem categoryItem = new TreeItem<>(categoryListItem.getName());
