@@ -6,12 +6,7 @@ public class EntityModelDto extends ObjectAbstractDto {
 
     private EntityCategoryDto entityCategoryDto;
 
-    public EntityModelDto() {
-    }
-
-    public EntityModelDto(int id, String name) {
-        super(name, id);
-    }
+    public EntityModelDto() {}
 
     public EntityModelDto(int id, String name, EntityCategoryDto entityCategoryDto) {
         super(name, id);
@@ -33,13 +28,11 @@ public class EntityModelDto extends ObjectAbstractDto {
         }
 
         EntityModelDto differentModel = (EntityModelDto) object;
+        return super.equals(object) && Objects.equals(entityCategoryDto, differentModel.entityCategoryDto);
+    }
 
-        if (entityCategoryDto == null && differentModel.entityCategoryDto == null) {
-            return super.equals(object);
-        } else if (entityCategoryDto == null || differentModel.entityCategoryDto == null) {
-            return false;
-        } else {
-            return super.equals(object) && Objects.equals(entityCategoryDto, differentModel.entityCategoryDto);
-        }
+    @Override
+    public String toString() {
+        return getName();
     }
 }

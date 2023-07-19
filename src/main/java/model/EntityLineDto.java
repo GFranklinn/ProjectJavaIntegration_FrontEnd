@@ -1,9 +1,10 @@
 package model;
 
+import java.util.Objects;
+
 public class EntityLineDto extends ObjectAbstractDto {
 
-    public EntityLineDto() {
-    }
+    public EntityLineDto() {}
 
     public EntityLineDto(int id, String name) {
         super(name, id);
@@ -15,6 +16,7 @@ public class EntityLineDto extends ObjectAbstractDto {
             return false;
         }
 
+        EntityLineDto differentLine = (EntityLineDto) object;
         return super.equals(object);
     }
 

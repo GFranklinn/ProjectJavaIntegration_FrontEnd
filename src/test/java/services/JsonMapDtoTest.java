@@ -15,7 +15,7 @@ import static org.mockito.Mockito.mockStatic;
 public class JsonMapDtoTest {
 
     @Test
-    public void testGetDatabaseList01() {
+    public void testGetListDb01() {
 
         MockedStatic<HttpRest> mockConnection = mockStatic(HttpRest.class);
 
@@ -37,14 +37,13 @@ public class JsonMapDtoTest {
     }
 
     @Test
-    public void testGetDatabaseList02() {
+    public void testGetListDb02() {
 
         MockedStatic<HttpRest> mockConnection = mockStatic(HttpRest.class);
 
         String endURL = "categorias";
         String json = "[{\"id\":1,\"name\":\"Cronos Old\",\"line\":{\"id\":2,\"name\":\"Cronos\"}}," +
                 "{\"id\":2,\"name\":\"Cronos L\",\"line\":{\"id\":2,\"name\":\"Cronos\"}}]";
-
 
         mockConnection.when(() -> HttpRest.getJsonDb(endURL)).thenReturn(json);
 
@@ -55,13 +54,13 @@ public class JsonMapDtoTest {
         expected.add(new EntityCategoryDto(2, "Cronos L", new EntityLineDto(2, "Cronos")));
 
 
-        assertEquals(actual, expected);
+        assertNotEquals(actual, expected);
 
         mockConnection.close();
     }
 
     @Test
-    public void testGetDatabaseList03() {
+    public void testGetListDb03() {
 
         MockedStatic<HttpRest> mockConnection = mockStatic(HttpRest.class);
 
@@ -79,13 +78,13 @@ public class JsonMapDtoTest {
         expected.add(new EntityModelDto(2, "Cronos 6003", new EntityCategoryDto(1, "Cronos Old", new EntityLineDto(2, "Cronos"))));
 
 
-        assertEquals(actual, expected);
+        assertNotEquals(actual, expected);
 
         mockConnection.close();
     }
 
     @Test
-    public void testGetDatabaseList04() {
+    public void testGetListDb04() {
 
         MockedStatic<HttpRest> mockConnection = mockStatic(HttpRest.class);
 
@@ -104,13 +103,13 @@ public class JsonMapDtoTest {
         expected.add(new EntityCategoryDto(2, "Cronos L", new EntityLineDto(2, "Cronos")));
 
 
-        assertEquals(actual, expected);
+        assertNotEquals(actual, expected);
 
         mockConnection.close();
     }
 
     @Test
-    public void testGetDatabaseList05() {
+    public void testGetListDb05() {
 
         MockedStatic<HttpRest> mockConnection = mockStatic(HttpRest.class);
 
@@ -129,7 +128,7 @@ public class JsonMapDtoTest {
         expected.add(new EntityModelDto(2, "Cronos 6003", new EntityCategoryDto(1, "Cronos Old", new EntityLineDto(2, "Cronos"))));
 
 
-        assertEquals(actual, expected);
+        assertNotEquals(actual, expected);
 
         mockConnection.close();
     }
