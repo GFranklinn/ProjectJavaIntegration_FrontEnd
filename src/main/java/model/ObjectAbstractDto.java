@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public abstract class ObjectAbstractDto{
     private int id;
     private String name;
@@ -24,6 +26,22 @@ public abstract class ObjectAbstractDto{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (!(obj instanceof ObjectAbstractDto)) {
+            return false;
+        }
+
+        ObjectAbstractDto otherObject = (ObjectAbstractDto) obj;
+
+        return Objects.equals(name, otherObject.name)
+                && Objects.equals(id, otherObject.id);
     }
 
     @Override
