@@ -71,7 +71,6 @@ public class MainControllerTest extends ApplicationTest {
 
     @Test
     public void fillLineSelectorComboBoxTest01() {
-
         MockedStatic<JsonMapDto> mockConnection = mockStatic(JsonMapDto.class);
 
         EntityLineDto ares = new EntityLineDto(1, "Ares");
@@ -80,13 +79,13 @@ public class MainControllerTest extends ApplicationTest {
         EntityLineDto[] dtos = new EntityLineDto[]{ares, cronos};
         List<EntityLineDto> expected = Arrays.asList(dtos);
 
-        mockConnection.when(() -> getListDb(EntityLineDto[].class, "linha")).thenReturn(expected);
+        mockConnection.when(() -> JsonMapDto.getListDb(EntityLineDto[].class, "linha")).thenReturn(expected);
         mainController.cbbLine.getItems().clear();
         mainController.fillCbbLineSelected();
         List<EntityLineDto> actual = mainController.cbbLine.getItems();
 
         error.checkThat("Check if lineSelector is being filled when LineDto List is called",
-                mainController.cbbLine.getItems().isEmpty(), is(false));
+                actual.isEmpty(), is(false));
         assertArrayEquals(expected.toArray(), actual.toArray());
 
         mockConnection.close();
@@ -102,7 +101,7 @@ public class MainControllerTest extends ApplicationTest {
         EntityLineDto[] dtos = new EntityLineDto[]{ares, cronos};
         List<EntityLineDto> expected = Arrays.asList(dtos);
 
-        mockConnection.when(() -> getListDb(EntityLineDto[].class, "linha")).thenReturn(expected);
+        mockConnection.when(() -> getListDb(EntityLineDto[].class, "linhas")).thenReturn(expected);
         mainController.cbbLine.getItems().clear();
         mainController.fillCbbLineSelected();
 
