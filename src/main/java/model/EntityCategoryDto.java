@@ -26,18 +26,11 @@ public class EntityCategoryDto extends ObjectAbstractDto {
         if (this == object) {
             return true;
         }
-
         if (!(object instanceof EntityCategoryDto)) {
             return false;
         }
-
-        if (!super.equals(object)) {
-            return false;
-        }
-
-        EntityCategoryDto differentCategory = (EntityCategoryDto) object;
-
-        return Objects.equals(entityLineDto, differentCategory.entityLineDto);
+        EntityCategoryDto other = (EntityCategoryDto) object;
+        return super.equals(object) && Objects.equals(this.getEntityLineDto(), other.getEntityLineDto());
     }
 
     @Override

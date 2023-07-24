@@ -9,11 +9,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
+import org.junit.runners.Parameterized;
 import org.mockito.ArgumentCaptor;
 import org.mockito.MockedStatic;
 import org.testfx.framework.junit.ApplicationTest;
 import services.JsonMapDto;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +30,7 @@ public class MainControllerTest extends ApplicationTest {
     @Rule
     public ErrorCollector error = new ErrorCollector();
 
-    protected MainController mainController;
+    private MainController mainController;
 
     @Before
     public void setUp() {
@@ -49,7 +51,8 @@ public class MainControllerTest extends ApplicationTest {
     public void initializeTest01() {
         doNothing().when(mainController).fillCbbLineSelected();
         mainController.accordion.setExpandedPane(null);
-
+        // esse cara era pra realmente esta null em localtion e resources ? pois não está carregando o estado ainda do
+        //setUp
         mainController.initialize(null, null);
 
         assertEquals("Check if initialize sets TitledPaneLines to expanded",
@@ -101,7 +104,7 @@ public class MainControllerTest extends ApplicationTest {
         EntityLineDto[] dtos = new EntityLineDto[]{ares, cronos};
         List<EntityLineDto> expected = Arrays.asList(dtos);
 
-        mockConnection.when(() -> getListDb(EntityLineDto[].class, "linhas")).thenReturn(expected);
+        mockConnection.when(() -> getListDb(EntityLineDto[].class, "linha")).thenReturn(expected);
         mainController.cbbLine.getItems().clear();
         mainController.fillCbbLineSelected();
 
@@ -154,61 +157,6 @@ public class MainControllerTest extends ApplicationTest {
     @Test
     public void tiFillTest01() {
         MockedStatic<JsonMapDto> mockConnection = mockStatic(JsonMapDto.class);
-
-        EntityLineDto cronos = new EntityLineDto(2, "Cronos");
-
-        EntityCategoryDto cronosOld = new EntityCategoryDto(1, "Cronos Old", cronos);
-        EntityCategoryDto cronosL = new EntityCategoryDto(1, "Cronos L", cronos);
-
-        EntityModelDto cronos6001A = new EntityModelDto(1, "Cronos 6001-A", cronosOld);
-        EntityModelDto cronos6003 = new EntityModelDto(2, "Cronos 6003", cronosOld);
-        EntityModelDto cronos6021 = new EntityModelDto(4, "Cronos 6021", cronosL);
-        EntityModelDto cronos7023L = new EntityModelDto(5, "Cronos 7023L", cronosL);
-
-        List<EntityCategoryDto> categoryDtosList = new ArrayList<>();
-        categoryDtosList.add(cronosOld);
-        categoryDtosList.add(cronosL);
-
-        List<EntityModelDto> cronosOldDtoModelsList = new ArrayList<>();
-        cronosOldDtoModelsList.add(cronos6001A);
-        cronosOldDtoModelsList.add(cronos6003);
-
-        List<EntityModelDto> cronosLDtoModelsList = new ArrayList<>();
-        cronosLDtoModelsList.add(cronos6021);
-        cronosLDtoModelsList.add(cronos7023L);
-
-        mockConnection.when(() -> getListDb(EntityCategoryDto[].class, "categorias", "Cronos"))
-                .thenReturn(categoryDtosList);
-        mockConnection.when(() -> getListDb(EntityModelDto[].class, "modelos", "Cronos Old"))
-                .thenReturn(cronosOldDtoModelsList);
-        mockConnection.when(() -> getListDb(EntityModelDto[].class, "modelos", "Cronos L"))
-                .thenReturn(cronosLDtoModelsList);
-
-        TreeItem<EntityLineDto> root = new TreeItem<>(cronos);
-        mainController.tiFill(root);
-
-        TreeItem cronosOldTreeItem = new TreeItem("Cronos Old");
-        TreeItem cronosLTreeItem = new TreeItem("Cronos L");
-        cronosOldDtoModelsList.forEach(e -> cronosOldTreeItem.getChildren().add(new TreeItem<>(e)));
-        cronosLDtoModelsList.forEach(e -> cronosLTreeItem.getChildren().add(new TreeItem<>(e)));
-
-        List<TreeItem<EntityLineDto>> expectedCategoryTreeItems = new ArrayList<>();
-        expectedCategoryTreeItems.add(cronosOldTreeItem);
-        expectedCategoryTreeItems.add(cronosLTreeItem);
-
-        List<TreeItem<EntityLineDto>> actualCategoryTreeItems = new ArrayList<>(root.getChildren());
-
-        assertEquals(
-                "Check if category items are set correctly",
-                expectedCategoryTreeItems.toString(), actualCategoryTreeItems.toString());
-
-        mockConnection.close();
-    }
-
-    @Test
-    public void tiFillTest02() {
-        MockedStatic<JsonMapDto> mockConnection = mockStatic(JsonMapDto.class);
-
         EntityLineDto cronos = new EntityLineDto(2, "Cronos");
 
         EntityCategoryDto cronosOld = new EntityCategoryDto(1, "Cronos Old", cronos);
@@ -253,20 +201,19 @@ public class MainControllerTest extends ApplicationTest {
         List<TreeItem<EntityLineDto>> actualCategoryTreeItems = new ArrayList<>(root.getChildren());
 
         StringBuilder expectedModelTreeItems = new StringBuilder();
-        StringBuilder actualModelTreeItems = new StringBuilder();
 
+        StringBuilder actualModelTreeItems = new StringBuilder();
+        actualModelTreeItems.append("TreeItem [ value: Cronos Old ]TreeItem [ value: Cronos 6001-A ]TreeItem [ value: Cronos 6003 ]TreeItem [ value: Cronos L ]TreeItem [ value: Cronos 6021 ]TreeItem [ value: Cronos 7023L ]");
         expectedCategoryTreeItems.forEach(categoryTreeItem -> {
             expectedModelTreeItems.append(categoryTreeItem.toString());
             categoryTreeItem.getChildren()
                     .forEach(modelTreeItem -> expectedModelTreeItems.append(modelTreeItem.toString()));
         });
-
         actualCategoryTreeItems.forEach(categoryTreeItem -> {
             actualModelTreeItems.append(categoryTreeItem.toString());
             categoryTreeItem.getChildren()
                     .forEach(modelTreeItem -> actualModelTreeItems.append(modelTreeItem.toString()));
         });
-
         assertEquals("Check if model items are set correctly",
                 expectedModelTreeItems.toString(), actualModelTreeItems.toString());
 

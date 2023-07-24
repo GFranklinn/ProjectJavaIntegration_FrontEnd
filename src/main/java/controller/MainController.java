@@ -65,21 +65,28 @@ public class MainController implements Initializable {
         }
     }
 
+
     public void tiFill(TreeItem root) {
         EntityLineDto cbbLineSelected = cbbLine.getValue();
 
-        List<EntityCategoryDto> categoryList = getListDb(EntityCategoryDto[].class, "categorias", String.valueOf(cbbLineSelected.getId()));
+        if (cbbLineSelected != null) {
+            List<EntityCategoryDto> categoryList = getListDb(EntityCategoryDto[].class, "categorias", String.valueOf(cbbLineSelected.getId()));
 
-        categoryList.forEach(categoryListItem -> {
-            TreeItem categoryItem = new TreeItem<>(categoryListItem.getName());
-            root.getChildren().add(categoryItem);
+            if (categoryList != null) {
+                categoryList.forEach(categoryListItem -> {
+                    TreeItem<String> categoryItem = new TreeItem<>(categoryListItem.getName());
+                    root.getChildren().add(categoryItem);
 
-            List<EntityModelDto> modelList = getListDb(EntityModelDto[].class, "modelos", String.valueOf(categoryListItem.getId()));
+                    List<EntityModelDto> modelList = getListDb(EntityModelDto[].class, "modelos", String.valueOf(categoryListItem.getId()));
 
-            modelList.forEach(model -> {
-                TreeItem modelItem = new TreeItem(model);
-                categoryItem.getChildren().add(modelItem);
-            });
-        });
+                    if (modelList != null) {
+                        modelList.forEach(model -> {
+                            TreeItem<String> modelItem = new TreeItem<>(model.getName());
+                            categoryItem.getChildren().add(modelItem);
+                        });
+                    }
+                });
+            }
+        }
     }
 }

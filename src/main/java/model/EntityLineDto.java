@@ -12,12 +12,14 @@ public class EntityLineDto extends ObjectAbstractDto {
 
     @Override
     public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
         if (!(object instanceof EntityLineDto)) {
             return false;
         }
-
-        EntityLineDto differentLine = (EntityLineDto) object;
-        return super.equals(object);
+        EntityLineDto other = (EntityLineDto) object;
+        return this.getId() == other.getId() && Objects.equals(this.getName(), other.getName());
     }
 
     @Override
